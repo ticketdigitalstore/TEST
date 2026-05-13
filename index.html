@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -326,6 +327,45 @@ input:focus,select:focus{
     display:none;
 }
 
+/* =========================
+   LOADING STYLE
+========================= */
+
+#loadingBox{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.95);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+    flex-direction:column;
+}
+
+.loading-content{
+    text-align:center;
+}
+
+.spinner{
+    width:70px;
+    height:70px;
+    border:7px solid #ddd;
+    border-top:7px solid #304ffe;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:auto;
+    margin-bottom:20px;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
 @keyframes fadeIn{
     from{
         opacity:0;
@@ -374,6 +414,7 @@ input:focus,select:focus{
         flex-direction:column;
     }
 }
+
 </style>
 </head>
 <body>
@@ -406,12 +447,12 @@ input:focus,select:focus{
 
             <div class="ticket-grid">
 
-                <div class="ticket-box active" onclick="pilihTiket('10K',175000,this)">
+                <div class="ticket-box active" onclick="pilihTiket('10K RUN',175000,this)">
                     <div class="ticket-title">10K RUN</div>
                     <div class="ticket-price">Rp 175.000</div>
                 </div>
 
-                <div class="ticket-box" onclick="pilihTiket('5K',100000,this)">
+                <div class="ticket-box" onclick="pilihTiket('5K FUN RUN',100000,this)">
                     <div class="ticket-title">5K FUN RUN</div>
                     <div class="ticket-price">Rp 100.000</div>
                 </div>
@@ -455,6 +496,7 @@ input:focus,select:focus{
             <h2>Checkout</h2>
 
             <div class="total-box">
+
                 <div style="margin-bottom:10px;">Kategori Tiket</div>
                 <h2 id="checkoutKategori">10K RUN</h2>
 
@@ -465,8 +507,10 @@ input:focus,select:focus{
                 <div class="total-price" id="checkoutTotal">Rp 175.000</div>
 
                 <div style="margin-top:25px;">
-                    <img src="qris.png" style="width:100%;max-width:320px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.15);">
+                    <img src="qris.png"
+                    style="width:100%;max-width:320px;border-radius:20px;box-shadow:0 8px 20px rgba(0,0,0,0.15);">
                 </div>
+
             </div>
 
             <div class="btn-area">
@@ -486,6 +530,24 @@ input:focus,select:focus{
 
     </div>
 
+</div>
+
+<!-- =========================
+     LOADING SCREEN
+========================= -->
+
+<div id="loadingBox" class="hidden">
+    <div class="loading-content">
+
+        <div class="spinner"></div>
+
+        <h2 style="margin-bottom:10px;color:#304ffe;">
+            Memproses Pendaftaran...
+        </h2>
+
+        <p>Mohon tunggu sebentar</p>
+
+    </div>
 </div>
 
 <script>
@@ -710,38 +772,33 @@ function backToForm(){
     document.getElementById('step2Indicator').classList.add('active');
 }
 
+/* =========================
+   SUBMIT + LOADING
+========================= */
+
 function submitForm(){
 
-    alert('Data berhasil dikirim');
-
-    // =========================================
-    // SIMPAN KE FIREBASE
-    // =========================================
-    // Tambahkan Firebase SDK di bawah lalu
-    // gunakan addDoc() atau push() database
-
-    // =========================================
-    // SIMPAN KE MYSQL / PHP
-    // =========================================
-    // Gunakan fetch API:
-
-    /*
-
-    fetch('simpan.php',{
-        method:'POST',
-        body:JSON.stringify(data)
-    })
-
-    */
-
+    // sembunyikan checkout
     document.getElementById('step3').style.display = 'none';
 
-    document.getElementById('successBox').style.display = 'block';
+    // tampilkan loading
+    document.getElementById('loadingBox').classList.remove('hidden');
+
+    // simulasi proses loading
+    setTimeout(()=>{
+
+        // sembunyikan loading
+        document.getElementById('loadingBox').classList.add('hidden');
+
+        // tampilkan sukses
+        document.getElementById('successBox').style.display = 'block';
+
+    },3000);
 }
 
-// =========================================
-// COUNTDOWN 10 MENIT
-// =========================================
+/* =========================
+   COUNTDOWN 10 MENIT
+========================= */
 
 let time = 600;
 
